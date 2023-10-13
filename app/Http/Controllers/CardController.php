@@ -26,8 +26,6 @@ class CardController extends Controller
             'balance' => 'required|numeric|max:9999'
         ]);
 
-        //$data['card_number'] = preg_replace('/\D/', '', $data['card_number']);
-
         // Save data to database
         $newCard = Card::create($data);
 
@@ -56,17 +54,6 @@ class CardController extends Controller
         $page = $request->input('page');
         $card->delete();
         return redirect(route('card.index', ['page' => $page]))->with('success', 'Card deleted successfully');
-    }
-
-    public function checkUnique(Request $request) {
-        $cardNumber = $request->input('card_number');
-        $pin = $request->input('pin');
-    
-        // Check in database if same card number or PIN exists
-        $exists = Card::where('card_number', $cardNumber)->orWhere('pin', $pin)->exists();
-    
-        // Return answer with JSON
-        return response()->json(['unique' => !$exists]);
     }
 
     public function __construct()
